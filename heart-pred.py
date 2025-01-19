@@ -5,7 +5,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 import joblib
 
 # Load your trained model (ensure the path is correct)
-GBC = joblib.load('models/heart_attack_pred_model.pkl')  # Replace with your model file path
+GBC = joblib.load('heart_attack_pred_model.pkl')  # Replace with your model file path
 
 st.sidebar.header('User Input Parameters')
 
