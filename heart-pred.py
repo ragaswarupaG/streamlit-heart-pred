@@ -1,133 +1,70 @@
-# import streamlit as st
-# import numpy as np
-# import pandas as pd
-# from sklearn.ensemble import GradientBoostingClassifier
-# import joblib
-
-# # Load your trained model (ensure the path is correct)
-# GBC = joblib.load('heart_attack_model.pkl')  # Replace with your model file path
-
-# st.sidebar.header('User Input Parameters')
-
-# def user_input_features():
-#     age = st.sidebar.slider('Age', 18, 100, 50)
-#     heart_rate = st.sidebar.slider('Heart Rate', 40, 180, 70)
-#     diabetes = st.sidebar.selectbox('Diabetes (0 for No, 1 for Yes)', [0, 1])
-#     family_history = st.sidebar.selectbox('Family History (0 for No, 1 for Yes)', [0, 1])
-#     smoking = st.sidebar.selectbox('Smoking (0 for No, 1 for Yes)', [0, 1])
-#     obesity = st.sidebar.selectbox('Obesity (0 for No, 1 for Yes)', [0, 1])
-#     alcohol_consumption = st.sidebar.selectbox('Alcohol Consumption (0 for No, 1 for Yes)', [0, 1])
-#     exercise_hours_per_week = st.sidebar.slider('Exercise Hours Per Week', 0, 20, 3)
-#     previous_heart_problems = st.sidebar.selectbox('Previous Heart Problems (0 for No, 1 for Yes)', [0, 1])
-#     stress_level = st.sidebar.slider('Stress Level', 0, 10, 5)
-#     sedentary_hours_per_day = st.sidebar.slider('Sedentary Hours Per Day', 0, 12, 5)
-#     bmi = st.sidebar.slider('BMI', 10.0, 50.0, 25.0)
-#     triglycerides = st.sidebar.slider('Triglycerides', 50, 400, 150)
-#     sleep_hours_per_day = st.sidebar.slider('Sleep Hours Per Day', 4, 12, 7)
-#     systolic = st.sidebar.slider('Systolic BP', 90, 180, 120)
-#     diastolic = st.sidebar.slider('Diastolic BP', 60, 120, 80)
-
-#     # Checkbox inputs for categorical data
-#     sex_female = st.sidebar.checkbox('Female')
-#     sex_male = st.sidebar.checkbox('Male')
-#     diet_average = st.sidebar.checkbox('Average Diet')
-#     diet_healthy = st.sidebar.checkbox('Healthy Diet')
-#     diet_unhealthy = st.sidebar.checkbox('Unhealthy Diet')
-#     cholesterol_normal = st.sidebar.checkbox('Normal Cholesterol')
-#     cholesterol_at_risk = st.sidebar.checkbox('Cholesterol At Risk')
-#     cholesterol_high = st.sidebar.checkbox('High Cholesterol')
-#     cholesterol_dangerous = st.sidebar.checkbox('Dangerous Cholesterol')
-
-#     data = {
-#         'age': Age,
-#         'heart_rate': Heart Rate,
-#         'diabetes': Diabetes,
-#         'family_history': Family History,
-#         'smoking': Smoking,
-#         'obesity': Obesity,
-#         'alcohol_consumption': Alcohol Consumption,
-#         'exercise_hours_per_week': Exercise Hours Per Week,
-#         'previous_heart_problems': Previous Heart Problems,
-#         'stress_level': Stress Level,
-#         'sedentary_hours_per_day': Sedentary Hours Per Day,
-#         'bmi': BMI,
-#         'triglycerides': Triglycerides,
-#         'sleep_hours_per_day': Sleep Hours Per Day,
-#         'systolic': Systolic,
-#         'diastolic': Diastolic,
-#         'sex_female': 1 if Sex_Female else 0,
-#         'sex_male': 1 if Sex_Male else 0,
-#         'diet_average': 1 if Diet_Average else 0,
-#         'diet_healthy': 1 if Diet_Healthy else 0,
-#         'diet_unhealthy': 1 if Diet_Unhealthy else 0,
-#         'cholesterol_normal': 1 if Cholesterol_Normal else 0,
-#         'cholesterol_at_risk': 1 if Cholesterol_At Risk else 0,
-#         'cholesterol_high': 1 if Cholesterol_High else 0,
-#         'cholesterol_dangerous': 1 if Cholesterol_Dangerous else 0
-#     }
-
-#     return pd.DataFrame(data, index=[0])
-
-# df = user_input_features()
-
-# st.subheader('User Input Parameters')
-# st.write(df)
-
-# # Make prediction
-# prediction = GBC.predict(df)
-# prediction_proba = GBC.predict_proba(df)
-
-# st.subheader('Prediction')
-# st.write('Heart Attack Risk:', 'High' if prediction[0] == 1 else 'Low')
-
-# st.subheader('Prediction Probability')
-# st.write(f"Probability of High Risk: {prediction_proba[0][1]:.2f}")
-# st.write(f"Probability of Low Risk: {prediction_proba[0][0]:.2f}")
-
-
-
 import streamlit as st
-import numpy as np
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
-import joblib
+from sklearn import model_selection
 
-# Load your trained model (ensure the path is correct)
-GBC = joblib.load('heart_attack_model.pkl')  # Replace with your model file path
+# Load the preprocessed dataset
+def load_data():
+    df = pd.read_csv('preprocessed_heart_data.csv') 
+    return df
 
+df = load_data()
+
+# Split the dataset into features (X) and target (y)
+X = df.drop('Heart Attack Risk', axis=1) 
+y = df['Heart Attack Risk']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
+
+# Train a Gradient Boosting Classifier
+GBC = GradientBoostingClassifier(
+    n_estimators=1000,         
+    learning_rate=0.05,       
+    max_depth=3,             
+    min_samples_split=15,     
+    min_samples_leaf=5,     
+    random_state=7
+)
+GBC.fit(X_train, y_train)
+
+# App title and description
+st.write("""
+# Heart Disease Prediction App
+This app predicts the **presence of heart disease** based on user input parameters.
+""")
+
+# Sidebar for user input
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    # Streamlit sidebar inputs
-    age = st.sidebar.slider('Age', 18, 100, 50)
-    heart_rate = st.sidebar.slider('Heart Rate', 40, 180, 70)
-    diabetes = st.sidebar.selectbox('Diabetes (0 for No, 1 for Yes)', [0, 1])
-    family_history = st.sidebar.selectbox('Family History (0 for No, 1 for Yes)', [0, 1])
-    smoking = st.sidebar.selectbox('Smoking (0 for No, 1 for Yes)', [0, 1])
-    obesity = st.sidebar.selectbox('Obesity (0 for No, 1 for Yes)', [0, 1])
-    alcohol_consumption = st.sidebar.selectbox('Alcohol Consumption (0 for No, 1 for Yes)', [0, 1])
-    exercise_hours_per_week = st.sidebar.slider('Exercise Hours Per Week', 0, 20, 3)
-    previous_heart_problems = st.sidebar.selectbox('Previous Heart Problems (0 for No, 1 for Yes)', [0, 1])
+    # Add input fields for each feature in your dataset
+    age = st.sidebar.slider('Age', 20, 100, 50)
+    heart_rate = st.sidebar.slider('Heart Rate', 60, 200, 80)
+    diabetes = st.sidebar.selectbox('Diabetes', (0, 1))  # 0 = No, 1 = Yes
+    family_history = st.sidebar.selectbox('Family History', (0, 1))  # 0 = No, 1 = Yes
+    smoking = st.sidebar.selectbox('Smoking', (0, 1))  # 0 = No, 1 = Yes
+    obesity = st.sidebar.selectbox('Obesity', (0, 1))  # 0 = No, 1 = Yes
+    alcohol_consumption = st.sidebar.slider('Alcohol Consumption', 0, 30, 5)
+    exercise_hours_per_week = st.sidebar.slider('Exercise Hours Per Week', 0, 40, 10)
+    previous_heart_problems = st.sidebar.selectbox('Previous Heart Problems', (0, 1))  # 0 = No, 1 = Yes
     stress_level = st.sidebar.slider('Stress Level', 0, 10, 5)
-    sedentary_hours_per_day = st.sidebar.slider('Sedentary Hours Per Day', 0, 12, 5)
-    bmi = st.sidebar.slider('BMI', 10.0, 50.0, 25.0)
-    triglycerides = st.sidebar.slider('Triglycerides', 50, 400, 150)
-    sleep_hours_per_day = st.sidebar.slider('Sleep Hours Per Day', 4, 12, 7)
-    systolic = st.sidebar.slider('Systolic BP', 90, 180, 120)
-    diastolic = st.sidebar.slider('Diastolic BP', 60, 120, 80)
+    sedentary_hours_per_day = st.sidebar.slider('Sedentary Hours Per Day', 0, 24, 8)
+    bmi = st.sidebar.slider('BMI', 10, 50, 25)
+    triglycerides = st.sidebar.slider('Triglycerides', 50, 500, 150)
+    sleep_hours_per_day = st.sidebar.slider('Sleep Hours Per Day', 0, 12, 7)
+    systolic = st.sidebar.slider('Systolic', 90, 200, 120)
+    diastolic = st.sidebar.slider('Diastolic', 60, 120, 80)
+    sex_female = st.sidebar.selectbox('Sex (Female)', (0, 1))  # 0 = No, 1 = Yes
+    sex_male = st.sidebar.selectbox('Sex (Male)', (0, 1))  # 0 = No, 1 = Yes
+    diet_average = st.sidebar.selectbox('Diet (Average)', (0, 1))  # 0 = No, 1 = Yes
+    diet_healthy = st.sidebar.selectbox('Diet (Healthy)', (0, 1))  # 0 = No, 1 = Yes
+    diet_unhealthy = st.sidebar.selectbox('Diet (Unhealthy)', (0, 1))  # 0 = No, 1 = Yes
+    cholesterol_normal = st.sidebar.selectbox('Cholesterol (Normal)', (0, 1))  # 0 = No, 1 = Yes
+    cholesterol_at_risk = st.sidebar.selectbox('Cholesterol (At Risk)', (0, 1))  # 0 = No, 1 = Yes
+    cholesterol_high = st.sidebar.selectbox('Cholesterol (High)', (0, 1))  # 0 = No, 1 = Yes
+    cholesterol_dangerous = st.sidebar.selectbox('Cholesterol (Dangerous)', (0, 1))  # 0 = No, 1 = Yes
 
-    # Checkbox inputs for categorical data
-    sex_female = st.sidebar.checkbox('Female')
-    sex_male = st.sidebar.checkbox('Male')
-    diet_average = st.sidebar.checkbox('Average Diet')
-    diet_healthy = st.sidebar.checkbox('Healthy Diet')
-    diet_unhealthy = st.sidebar.checkbox('Unhealthy Diet')
-    cholesterol_normal = st.sidebar.checkbox('Normal Cholesterol')
-    cholesterol_at_risk = st.sidebar.checkbox('Cholesterol At Risk')
-    cholesterol_high = st.sidebar.checkbox('High Cholesterol')
-    cholesterol_dangerous = st.sidebar.checkbox('Dangerous Cholesterol')
-
-    # Ensure dictionary keys match exactly with dataset column names (with spaces included)
     data = {
         'Age': age,
         'Heart Rate': heart_rate,
@@ -143,34 +80,36 @@ def user_input_features():
         'BMI': bmi,
         'Triglycerides': triglycerides,
         'Sleep Hours Per Day': sleep_hours_per_day,
-        'Systolic BP': systolic,
-        'Diastolic BP': diastolic,
-        'Sex_Female': 1 if sex_female else 0,
-        'Sex_Male': 1 if sex_male else 0,
-        'Diet_Average': 1 if diet_average else 0,
-        'Diet_Healthy': 1 if diet_healthy else 0,
-        'Diet_Unhealthy': 1 if diet_unhealthy else 0,
-        'Cholesterol_Normal': 1 if cholesterol_normal else 0,
-        'Cholesterol_At Risk': 1 if cholesterol_at_risk else 0,
-        'Cholesterol_High': 1 if cholesterol_high else 0,
-        'Cholesterol_Dangerous': 1 if cholesterol_dangerous else 0
+        'Systolic': systolic,
+        'Diastolic': diastolic,
+        'Sex_Female': sex_female,
+        'Sex_Male': sex_male,
+        'Diet_Average': diet_average,
+        'Diet_Healthy': diet_healthy,
+        'Diet_Unhealthy': diet_unhealthy,
+        'Cholesterol_Normal': cholesterol_normal,
+        'Cholesterol_At Risk': cholesterol_at_risk,
+        'Cholesterol_High': cholesterol_high,
+        'Cholesterol_Dangerous': cholesterol_dangerous
     }
+    features = pd.DataFrame(data, index=[0])
+    return features
 
-    return pd.DataFrame(data, index=[0])
+# Get user input
+user_input = user_input_features()
 
-df = user_input_features()
-
+# Display user input
 st.subheader('User Input Parameters')
-st.write(df)
+st.write(user_input)
 
-# Make prediction
-prediction = GBC.predict(df)
-prediction_proba = GBC.predict_proba(df)
+# Make predictions
+prediction = GBC.predict(user_input)
+prediction_proba = GBC.predict_proba(user_input)
 
+# Display results
 st.subheader('Prediction')
-st.write('Heart Attack Risk:', 'High' if prediction[0] == 1 else 'Low')
+st.write('0 = No Heart Disease, 1 = Heart Disease')
+st.write(prediction)
 
 st.subheader('Prediction Probability')
-st.write(f"Probability of High Risk: {prediction_proba[0][1]:.2f}")
-st.write(f"Probability of Low Risk: {prediction_proba[0][0]:.2f}")
-
+st.write(prediction_proba)
