@@ -1,40 +1,40 @@
-# import streamlit as st
-# import pandas as pd
-# from sklearn.ensemble import GradientBoostingClassifier
-# from sklearn import model_selection
+import streamlit as st
+import pandas as pd
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn import model_selection
 
-# # Load the preprocessed dataset
-# def load_data():
-#     df = pd.read_csv('preprocessed_heart_data.csv') 
-#     return df
+# Load the preprocessed dataset
+def load_data():
+    df = pd.read_csv('preprocessed_heart_data.csv') 
+    return df
 
-# df = load_data()
+df = load_data()
 
-# # Split the dataset into features (X) and target (y)
-# X = df.drop('Heart Attack Risk', axis=1) 
-# y = df['Heart Attack Risk']
+# Split the dataset into features (X) and target (y)
+X = df.drop('Heart Attack Risk', axis=1) 
+y = df['Heart Attack Risk']
 
-# # Split the data into training and testing sets
-# X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
 
-# # Train a Gradient Boosting Classifier
-# GBC = GradientBoostingClassifier(
-#     n_estimators=1000,         
-#     learning_rate=0.05,       
-#     max_depth=3,             
-#     min_samples_split=15,     
-#     min_samples_leaf=5,     
-#     random_state=7
-# )
-# GBC.fit(X_train, y_train)
+# Train a Gradient Boosting Classifier
+GBC = GradientBoostingClassifier(
+    n_estimators=1000,         
+    learning_rate=0.05,       
+    max_depth=3,             
+    min_samples_split=15,     
+    min_samples_leaf=5,     
+    random_state=7
+)
+GBC.fit(X_train, y_train)
 
-# st.write("""
-# # Heart Disease Prediction App
-# This app predicts the **presence of heart disease** based on user input parameters.
-# """)
+st.write("""
+# Heart Disease Prediction App
+This app predicts the **presence of heart disease** based on user input parameters.
+""")
 
-# # Sidebar for user input
-# st.sidebar.header('User Input Parameters')
+# Sidebar for user input
+st.sidebar.header('User Input Parameters')
 
 # def user_input_features():
 #     age = st.sidebar.slider('Age', 18, 100, 50)
@@ -91,37 +91,7 @@
 #         'Cholesterol_Dangerous': cholesterol_dangerous
 #     }
 #     features = pd.DataFrame(data, index=[0])
-#     return features
 
-# # Get user input
-# user_input = user_input_features()
-
-# # Display user input
-# st.subheader('User Input Parameters')
-# st.write(user_input)
-
-# # Make predictions
-# prediction = GBC.predict(user_input)
-# prediction_proba = GBC.predict_proba(user_input)
-
-# # Display results
-# st.subheader('Prediction')
-# st.write('0 = No Heart Disease, 1 = Heart Disease')
-# st.write(prediction)
-
-# st.subheader('Prediction Probability')
-# st.write(prediction_proba)
-
-import streamlit as st
-import numpy as np
-import pandas as pd
-from sklearn.ensemble import GradientBoostingClassifier
-import joblib
-
-# Load your trained model (ensure the path is correct)
-GBC = joblib.load('models/heart_attack_pred_model.pkl')  # Replace with your model file path
-
-st.sidebar.header('User Input Parameters')
 
 def user_input_features():
     # Basic Information
@@ -177,23 +147,24 @@ def user_input_features():
     }
 
     return pd.DataFrame(data, index=[0])
+    return features
 
 # Get user input
-df = user_input_features()
+user_input = user_input_features()
 
 # Display user input
 st.subheader('User Input Parameters')
-st.write(df)
+st.write(user_input)
 
-# Make prediction
-prediction = GBC.predict(df)
-prediction_proba = GBC.predict_proba(df)
+# Make predictions
+prediction = GBC.predict(user_input)
+prediction_proba = GBC.predict_proba(user_input)
 
-# Display prediction
+# Display results
 st.subheader('Prediction')
-st.write('Heart Attack Risk:', 'High' if prediction[0] == 1 else 'Low')
+st.write('0 = No Heart Disease, 1 = Heart Disease')
+st.write(prediction)
 
-# Display prediction probabilities
 st.subheader('Prediction Probability')
-st.write(f"Probability of High Risk: {prediction_proba[0][1]:.2f}")
-st.write(f"Probability of Low Risk: {prediction_proba[0][0]:.2f}")
+st.write(prediction_proba)
+
