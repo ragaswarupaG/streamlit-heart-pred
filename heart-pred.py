@@ -126,7 +126,7 @@ def user_input_features():
     exercise_hours_per_week = st.sidebar.slider('Exercise Hours Per Week', 0, 40, 10)
     previous_heart_problems = st.sidebar.selectbox('Previous Heart Problems', ['No', 'Yes'])
     stress_level = st.sidebar.slider('Stress Level (0-10)', 0, 10, 5)
-    sedentary_hours_per_day = st.slider('Sedentary Hours Per Day', 0, 24, 8)
+    sedentary_hours_per_day = st.sidebar.slider('Sedentary Hours Per Day', 0, 24, 8)
     bmi = st.sidebar.slider('BMI', 10, 50, 25)
     triglycerides = st.sidebar.slider('Triglycerides', 50, 500, 150)
     sleep_hours_per_day = st.sidebar.slider('Sleep Hours Per Day', 0, 12, 7)
