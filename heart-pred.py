@@ -43,7 +43,7 @@ def user_input_features():
     family_history = st.sidebar.selectbox('Family History', (0, 1))  # 0 = No, 1 = Yes
     smoking = st.sidebar.selectbox('Smoking', (0, 1))  # 0 = No, 1 = Yes
     obesity = st.sidebar.selectbox('Obesity', (0, 1))  # 0 = No, 1 = Yes
-         alcohol_consumption = st.sidebar.selectbox('Alcohol Consumption', (0, 1))  # 0 = No, 1 = Yes
+    alcohol_consumption = st.sidebar.selectbox('Alcohol Consumption', (0, 1))  # 0 = No, 1 = Yes
 
     exercise_hours_per_week = st.sidebar.slider('Exercise Hours Per Week', 0, 40, 10)
     previous_heart_problems = st.sidebar.selectbox('Previous Heart Problems', (0, 1))  # 0 = No, 1 = Yes
