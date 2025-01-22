@@ -100,21 +100,6 @@ GBC.fit(X_train, y_train)
 #     return pd.DataFrame(data, index=[0])
 #     return features
 
-# # Get user input
-# user_input = user_input_features()
-
-# # Display user input
-# st.subheader('User Input Parameters')
-# st.write(user_input)
-
-# # Make predictions
-# prediction = GBC.predict(user_input)
-# prediction_proba = GBC.predict_proba(user_input)
-
-# # Display results
-# st.subheader('Prediction')
-# st.write('0 = No Heart Disease, 1 = Heart Disease')
-# st.write(prediction)
 
 
 
@@ -131,38 +116,27 @@ This app predicts the **presence of heart disease** based on user input paramete
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    age = st.slider('Age', 18, 100, 50)
-    heart_rate = st.slider('Heart Rate', 60, 200, 80)
-    diabetes = st.selectbox('Diabetes', ['No', 'Yes'])
-    family_history = st.selectbox('Family History of Heart Disease', ['No', 'Yes'])
-    smoking = st.selectbox('Smoking', ['No', 'Yes'])
-    obesity = st.selectbox('Obesity', ['No', 'Yes'])
-    alcohol_consumption = st.selectbox('Alcohol Consumption', ['No', 'Yes'])
-    exercise_hours_per_week = st.slider('Exercise Hours Per Week', 0, 40, 10)
-    previous_heart_problems = st.selectbox('Previous Heart Problems', ['No', 'Yes'])
-    stress_level = st.slider('Stress Level (0-10)', 0, 10, 5)
+    age = st.sidebar.slider('Age', 18, 100, 50)
+    heart_rate = st.sidebar.slider('Heart Rate', 60, 200, 80)
+    diabetes = st.sidebar.selectbox('Diabetes', ['No', 'Yes'])
+    family_history = st.sidebar.selectbox('Family History of Heart Disease', ['No', 'Yes'])
+    smoking = st.sidebar.selectbox('Smoking', ['No', 'Yes'])
+    obesity = st.sidebar.selectbox('Obesity', ['No', 'Yes'])
+    alcohol_consumption = st.sidebar.selectbox('Alcohol Consumption', ['No', 'Yes'])
+    exercise_hours_per_week = st.sidebar.slider('Exercise Hours Per Week', 0, 40, 10)
+    previous_heart_problems = st.sidebar.selectbox('Previous Heart Problems', ['No', 'Yes'])
+    stress_level = st.sidebar.slider('Stress Level (0-10)', 0, 10, 5)
     sedentary_hours_per_day = st.slider('Sedentary Hours Per Day', 0, 24, 8)
-    bmi = st.slider('BMI', 10, 50, 25)
-    triglycerides = st.slider('Triglycerides', 50, 500, 150)
-    sleep_hours_per_day = st.slider('Sleep Hours Per Day', 0, 12, 7)
-    systolic = st.slider('Systolic Blood Pressure', 90, 200, 120)
-    diastolic = st.slider('Diastolic Blood Pressure', 60, 120, 80)
+    bmi = st.sidebar.slider('BMI', 10, 50, 25)
+    triglycerides = st.sidebar.slider('Triglycerides', 50, 500, 150)
+    sleep_hours_per_day = st.sidebar.slider('Sleep Hours Per Day', 0, 12, 7)
+    systolic = st.sidebar.slider('Systolic Blood Pressure', 90, 200, 120)
+    diastolic = st.sidebar.slider('Diastolic Blood Pressure', 60, 120, 80)
 
-    sex = st.radio('Sex', ['Male', 'Female'])
-    diet = st.selectbox('Diet', ['Average', 'Healthy', 'Unhealthy'])
-    cholesterol = st.selectbox('Cholesterol Level', ['Normal', 'At Risk', 'High', 'Dangerous'])
+    sex = st.sidebar.radio('Sex', ['Male', 'Female'])
+    diet = st.sidebar.selectbox('Diet', ['Average', 'Healthy', 'Unhealthy'])
+    cholesterol = st.sidebar.selectbox('Cholesterol Level', ['Normal', 'At Risk', 'High', 'Dangerous'])
 
-
-        
- 
-        
-        
-        
-     
-      
-
-       
-        
 
     data = {
         'Age': age,
@@ -192,7 +166,10 @@ def user_input_features():
         'Cholesterol_Dangerous': 1 if cholesterol == 'Dangerous' else 0
     }
     features = pd.DataFrame(data, index=[0])
+    return pd.DataFrame(data, index=[0])
     return features
+
+
 
 # Get user input
 user_input = user_input_features()
@@ -209,8 +186,4 @@ prediction_proba = GBC.predict_proba(user_input)
 st.subheader('Prediction')
 st.write('0 = No Heart Disease, 1 = Heart Disease')
 st.write(prediction)
-
-# Display prediction probability
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
 
