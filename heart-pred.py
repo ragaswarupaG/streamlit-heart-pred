@@ -115,6 +115,6 @@ st.subheader('Prediction')
 st.write('0 = No Heart Disease, 1 = Heart Disease')
 st.write(prediction)
 
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
+# st.subheader('Prediction Probability')
+# st.write(prediction_proba)
 
