@@ -1,32 +1,32 @@
-# import streamlit as st
-# import pandas as pd
-# from sklearn.ensemble import GradientBoostingClassifier
-# from sklearn import model_selection
+import streamlit as st
+import pandas as pd
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn import model_selection
 
-# # Load the preprocessed dataset
-# def load_data():
-#     df = pd.read_csv('preprocessed_heart_data.csv') 
-#     return df
+# Load the preprocessed dataset
+def load_data():
+    df = pd.read_csv('preprocessed_heart_data.csv') 
+    return df
 
-# df = load_data()
+df = load_data()
 
-# # Split the dataset into features (X) and target (y)
-# X = df.drop('Heart Attack Risk', axis=1) 
-# y = df['Heart Attack Risk']
+# Split the dataset into features (X) and target (y)
+X = df.drop('Heart Attack Risk', axis=1) 
+y = df['Heart Attack Risk']
 
-# # Split the data into training and testing sets
-# X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
 
-# # Train a Gradient Boosting Classifier
-# GBC = GradientBoostingClassifier(
-#     n_estimators=1000,         
-#     learning_rate=0.05,       
-#     max_depth=3,             
-#     min_samples_split=15,     
-#     min_samples_leaf=5,     
-#     random_state=7
-# )
-# GBC.fit(X_train, y_train)
+# Train a Gradient Boosting Classifier
+GBC = GradientBoostingClassifier(
+    n_estimators=1000,         
+    learning_rate=0.05,       
+    max_depth=3,             
+    min_samples_split=15,     
+    min_samples_leaf=5,     
+    random_state=7
+)
+GBC.fit(X_train, y_train)
 
 # st.write("""
 # # Heart Disease Prediction App
@@ -119,35 +119,8 @@
 
 
 
-import streamlit as st
-import pandas as pd
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn import model_selection
 
-# Load the preprocessed dataset
-def load_data():
-    df = pd.read_csv('preprocessed_heart_data.csv') 
-    return df
 
-df = load_data()
-
-# Split the dataset into features (X) and target (y)
-X = df.drop('Heart Attack Risk', axis=1) 
-y = df['Heart Attack Risk']
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
-
-# Train a Gradient Boosting Classifier
-GBC = GradientBoostingClassifier(
-    n_estimators=1000,         
-    learning_rate=0.05,       
-    max_depth=3,             
-    min_samples_split=15,     
-    min_samples_leaf=5,     
-    random_state=7
-)
-GBC.fit(X_train, y_train)
 
 st.write("""
 # Heart Disease Prediction App
@@ -158,34 +131,37 @@ This app predicts the **presence of heart disease** based on user input paramete
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    with st.sidebar.expander("Personal Information"):
+
         age = st.slider('Age', 18, 100, 50)
-        sex = st.radio('Sex', ['Male', 'Female'])
-        bmi = st.slider('BMI', 10, 50, 25)
-        stress_level = st.slider('Stress Level (0-10)', 0, 10, 5)
-        sleep_hours_per_day = st.slider('Sleep Hours Per Day', 0, 12, 7)
-
-    with st.sidebar.expander("Health Metrics"):
         heart_rate = st.slider('Heart Rate', 60, 200, 80)
-        systolic = st.slider('Systolic Blood Pressure', 90, 200, 120)
-        diastolic = st.slider('Diastolic Blood Pressure', 60, 120, 80)
-        triglycerides = st.slider('Triglycerides', 50, 500, 150)
-        cholesterol = st.selectbox('Cholesterol Level', ['Normal', 'At Risk', 'High', 'Dangerous'])
-
-    with st.sidebar.expander("Lifestyle Factors"):
-        smoking = st.selectbox('Smoking', ['No', 'Yes'])
-        alcohol_consumption = st.selectbox('Alcohol Consumption', ['No', 'Yes'])
-        exercise_hours_per_week = st.slider('Exercise Hours Per Week', 0, 40, 10)
-        sedentary_hours_per_day = st.slider('Sedentary Hours Per Day', 0, 24, 8)
-        diet = st.selectbox('Diet', ['Average', 'Healthy', 'Unhealthy'])
-
-    with st.sidebar.expander("Medical History"):
         diabetes = st.selectbox('Diabetes', ['No', 'Yes'])
         family_history = st.selectbox('Family History of Heart Disease', ['No', 'Yes'])
-        previous_heart_problems = st.selectbox('Previous Heart Problems', ['No', 'Yes'])
+        smoking = st.selectbox('Smoking', ['No', 'Yes'])
         obesity = st.selectbox('Obesity', ['No', 'Yes'])
+        alcohol_consumption = st.selectbox('Alcohol Consumption', ['No', 'Yes'])
+        exercise_hours_per_week = st.slider('Exercise Hours Per Week', 0, 40, 10)
+        previous_heart_problems = st.selectbox('Previous Heart Problems', ['No', 'Yes'])
+        stress_level = st.slider('Stress Level (0-10)', 0, 10, 5)
+ 
+        sedentary_hours_per_day = st.slider('Sedentary Hours Per Day', 0, 24, 8)
+        bmi = st.slider('BMI', 10, 50, 25)
+        triglycerides = st.slider('Triglycerides', 50, 500, 150)
+        sleep_hours_per_day = st.slider('Sleep Hours Per Day', 0, 12, 7)
+        systolic = st.slider('Systolic Blood Pressure', 90, 200, 120)
+        diastolic = st.slider('Diastolic Blood Pressure', 60, 120, 80)
 
-    # Convert categorical inputs to numerical
+        sex = st.radio('Sex', ['Male', 'Female'])
+        diet = st.selectbox('Diet', ['Average', 'Healthy', 'Unhealthy'])
+        cholesterol = st.selectbox('Cholesterol Level', ['Normal', 'At Risk', 'High', 'Dangerous'])
+
+        
+        
+     
+      
+
+       
+        
+
     data = {
         'Age': age,
         'Heart Rate': heart_rate,
