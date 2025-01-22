@@ -146,6 +146,7 @@ def user_input_features():
         'diet_unhealthy': 1 if diet == 'Unhealthy' else 0,
     }
 
+
     return pd.DataFrame(data, index=[0])
     return features
 
