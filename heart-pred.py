@@ -80,8 +80,8 @@ def user_input_features():
         'Cholesterol_High': 1 if cholesterol == 'High' else 0,
         'Cholesterol_Dangerous': 1 if cholesterol == 'Dangerous' else 0
     }
-     features = pd.DataFrame(data, index=[0])
-     return features
+features = pd.DataFrame(data, index=[0])
+return features
 
 # Get user input
 user_input = user_input_features()
