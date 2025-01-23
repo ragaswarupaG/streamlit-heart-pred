@@ -80,11 +80,8 @@ def user_input_features():
         'Cholesterol_High': 1 if cholesterol == 'High' else 0,
         'Cholesterol_Dangerous': 1 if cholesterol == 'Dangerous' else 0
     }
-    features = pd.DataFrame(data, index=[0])
-    return pd.DataFrame(data, index=[0])
-    return features
-
-
+     features = pd.DataFrame(data, index=[0])
+     return features
 
 # Get user input
 user_input = user_input_features()
@@ -93,12 +90,35 @@ user_input = user_input_features()
 st.subheader('User Input Parameters')
 st.write(user_input)
 
-# Make predictions
-prediction = GBC.predict(user_input)
-prediction_proba = GBC.predict_proba(user_input)
+# Predict on user input
+predicted_percentage = rf_hyp.predict(user_input)  # Predict the percentage risk
+predicted_class = 1 if predicted_percentage >= 0.5 else 0  # Convert to binary classification
 
 # Display results
 st.subheader('Prediction')
-st.write('0 = No Heart Disease, 1 = Heart Disease')
-st.write(prediction)
+st.write(f"Predicted Percentage Risk: {predicted_percentage[0]:.2f}")
+st.write(f"Predicted Class: {predicted_class} (0 = No Heart Disease, 1 = Heart Disease)")
+
+
+
+#     features = pd.DataFrame(data, index=[0])
+#     return pd.DataFrame(data, index=[0])
+#     return features
+
+
+
+# # Get user input
+# user_input = user_input_features()
+
+# # Display user input
+# st.subheader('User Input Parameters')
+# st.write(user_input)
+
+# RFR_predictions = (rf_hyp.predict(X_test) >= 0.5).astype(int)  
+
+
+# # Display results
+# st.subheader('Prediction')
+# st.write('0 = No Heart Disease, 1 = Heart Disease')
+# st.write(prediction)
 
