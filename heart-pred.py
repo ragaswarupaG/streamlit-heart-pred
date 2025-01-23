@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import model_selection
+from sklearn.ensemble import RandomForestRegressor
 
 # Load the preprocessed dataset
 def load_data():
