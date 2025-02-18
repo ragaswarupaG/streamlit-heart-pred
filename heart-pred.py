@@ -4,18 +4,15 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import model_selection
 from sklearn.ensemble import RandomForestRegressor
 
-# Load the preprocessed dataset
 def load_data():
     df = pd.read_csv('preprocessed_heart_data.csv') 
     return df
 
 df = load_data()
 
-# Split the dataset into features (X) and target (y)
 X = df.drop('Heart Attack Risk', axis=1) 
 y = df['Heart Attack Risk']
 
-# Split the data into training and testing sets
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.30, random_state=7)
 
 rf_hyp = RandomForestRegressor(max_depth = 15,random_state = 7, n_estimators=500, min_samples_leaf=2)
@@ -27,7 +24,6 @@ st.write("""
 This app predicts the **presence of heart disease** based on user input parameters.
 """)
 
-# Sidebar for user input
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
@@ -83,42 +79,17 @@ def user_input_features():
     features = pd.DataFrame(data, index=[0])
     return features
 
-# Get user input
 user_input = user_input_features()
 
 # Display user input
 st.subheader('User Input Parameters')
 st.write(user_input)
 
-# Predict on user input
 predicted_percentage = rf_hyp.predict(user_input)  # Predict the percentage risk
 predicted_class = 1 if predicted_percentage >= 0.5 else 0  # Convert to binary classification
 
-# Display results
 st.subheader('Prediction')
 st.write(f"Predicted Percentage Risk: {predicted_percentage[0]:.2f}")
 st.write(f"Predicted Class: {predicted_class} (0 = No Heart Disease, 1 = Heart Disease)")
 
-
-
-#     features = pd.DataFrame(data, index=[0])
-#     return pd.DataFrame(data, index=[0])
-#     return features
-
-
-
-# # Get user input
-# user_input = user_input_features()
-
-# # Display user input
-# st.subheader('User Input Parameters')
-# st.write(user_input)
-
-# RFR_predictions = (rf_hyp.predict(X_test) >= 0.5).astype(int)  
-
-
-# # Display results
-# st.subheader('Prediction')
-# st.write('0 = No Heart Disease, 1 = Heart Disease')
-# st.write(prediction)
 
